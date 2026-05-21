@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "rfc-guard",
+  "displayName": "RFC Guard",
+  "version": "1.0.0",
+  "description": "Automatically detect RFC-level architecture changes and enforce engineering taste guidelines on Stop. Blocks completion when code changes touch data sources, API contracts, AI orchestration, compliance boundaries, or persistence without updating the relevant RFC.",
+  "author": {
+    "name": "Nicole Chen",
+    "email": ""
+  },
+  "repository": "https://github.com/YuqingNicole/rfc-guard",
+  "license": "MIT",
+  "keywords": ["rfc", "architecture", "hooks", "code-review", "engineering-taste", "guard"],
+  "hooks": "./hooks/hooks.json"
+}

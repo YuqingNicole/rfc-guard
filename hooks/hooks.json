@@ -1,0 +1,28 @@
+{
+  "description": "RFC Guard: two-layer Stop hook that blocks when changes touch RFC-level decisions or violate engineering taste",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/rfc-guard.sh",
+            "timeout": 10,
+            "statusMessage": "RFC Guard: checking for architecture-level changes..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "You are a code taste reviewer. First check if there are code changes by running `git diff` and `git diff --cached`. If there are NO changes, approve immediately without blocking.\n\nIf there ARE changes, look for a file named ENGINEERING_TASTE.md in the project (check rfcs/ENGINEERING_TASTE.md, docs/ENGINEERING_TASTE.md, or ENGINEERING_TASTE.md). If found, evaluate changes against its principles. If not found, evaluate against these universal engineering principles:\n\n1. Thin explicit layers - no cross-layer leakage\n2. Normalize at the boundary - third-party quirks stay in adapters\n3. No premature platformization\n4. Surgical changes - smallest patch that makes intent obvious\n5. Plain code over clever abstractions\n6. Fail loud at boundaries\n7. Let deterministic code do deterministic work (don't use AI for routing/parsing/filtering)\n8. Product compliance boundaries\n\nIf the changes are minor (config, docs, formatting, tests) or clearly follow good engineering practices, APPROVE silently. Only BLOCK (exit code 2) if there is a clear, specific violation. When blocking, name the exact violation and the principle it breaks. Be concise - max 3 lines.",
+            "timeout": 30,
+            "model": "claude-haiku-4-5-20251001",
+            "statusMessage": "Engineering Taste: reviewing code quality..."
+          }
+        ]
+      }
+    ]
+  }
+}
